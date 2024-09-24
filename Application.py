@@ -21,15 +21,20 @@ def load_metadata():
     metadata = [json.loads(line) for line in metadata_lines]
     return pd.DataFrame(metadata)
 
-# Send a prompt to the OpenAI model
+# Send a prompt to the OpenAI model using gpt-3.5-turbo
 def query_openai_model(question, context):
     prompt = f"Context: {context}\n\nQuestion: {question}\nAnswer:"
-    response = openai.Completion.create(
-        engine="text-davinci-003", 
-        prompt=prompt, 
+    
+    # Using gpt-3.5-turbo instead of gpt-4
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # Switched to gpt-3.5-turbo
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
         max_tokens=100
     )
-    return response.choices[0].text.strip()
+    return response['choices'][0]['message']['content'].strip()
 
 # Compare OpenAI's answer to the final answer in the metadata
 def compare_answers(openai_answer, final_answer):
