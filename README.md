@@ -22,10 +22,11 @@ requirements.txt file - Used to list all dependencies for the streamlit applicat
 
 
 
+
 Attestation and contribution declaration:
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR
 ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK
 Contribution overall:
 1. Sathvik Vadavatha : 33% contribution
-b. Rutuja Patil: 33% contribution
-c. Sakshi Aade: 33% contribution
+2. Rutuja Patil: 33% contribution
+3. Sakshi Aade: 33% contribution
