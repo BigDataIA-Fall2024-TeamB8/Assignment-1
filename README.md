@@ -7,6 +7,9 @@ Link : https://bigdataia-fall2024-teamb8.github.io/Assignment-1/
 
 All links and submissions provided in repositry+codelabs document
 
+Upload.py file - Used to upload the dataset from HuggingFace to AWS S3
+
+
 
 Attestation and contribution declaration:
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR
