@@ -1,4 +1,4 @@
-## GAIA-Based OpenAI Model Evaluation Platform
+# GAIA-Based OpenAI Model Evaluation Platform
 
 # Attestation and contribution declaration:
 WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR
@@ -9,6 +9,8 @@ Contribution overall:
 3. Sakshi Aade: 33% contribution
 
 # Link : https://bigdataia-fall2024-teamb8.github.io/Assignment-1/
+# Demo link: https://teams.microsoft.com/l/message/19:b70d9eb5-c1e3-48a5-b54f-4c64bde734b6_e5dd80e0-1f95-4602-8440-1494c1c1d4cd@unq.gbl.spaces/1727464069180?context=%7B%22contextType%22%3A%22chat%22%7D
+# Codelabs link: https://teams.microsoft.com/l/message/19:b70d9eb5-c1e3-48a5-b54f-4c64bde734b6_e5dd80e0-1f95-4602-8440-1494c1c1d4cd@unq.gbl.spaces/1727464165570?context=%7B%22contextType%22%3A%22chat%22%7D
 
 All links and submissions provided in repositry+codelabs document
 
