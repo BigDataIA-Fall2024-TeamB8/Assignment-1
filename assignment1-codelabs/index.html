@@ -1,0 +1,268 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id=""
+                  title=""
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Assignment 1 - GAIA-Based OpenAI Model Evaluation Platform" duration="0">
+        <p><strong>Team B-8</strong></p>
+<h2 is-upgraded><strong>Team member 1 - Sakshi Aade</strong></h2>
+<h2 is-upgraded><strong>Team member 2 - Sathvik Vadavatha</strong></h2>
+<h2 is-upgraded><strong>Team member 3 - Rutuja Patil</strong></h2>
+<p><strong>GitHub Repository Link</strong> - <a href="https://github.com/BigDataIA-Fall2024-TeamB8/Assignment-1" target="_blank">https://github.com/BigDataIA-Fall2024-TeamB8/Assignment-1</a></p>
+<p><strong>GitHub Project Link</strong> - <a href="https://github.com/orgs/BigDataIA-Fall2024-TeamB8/projects/1" target="_blank">https://github.com/orgs/BigDataIA-Fall2024-TeamB8/projects/1</a></p>
+<p><strong>Link to Streamlit Cloud Application</strong> - <a href="https://assignment1-teamb8.streamlit.app/" target="_blank">https://assignment1-teamb8.streamlit.app/</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Introduction" duration="0">
+        <p>This assignment focuses on building a tool for evaluating the GAIA dataset using OpenAI&#39;s API. The tool allows users to select test cases, process them through OpenAI&#39;s model, and analyze the results. Additionally, users can adjust annotator steps to improve model performance where necessary. The solution integrates several technologies, including Streamlit for the user interface, OpenAI&#39;s GPT for processing, and AWS S3 for managing metadata storage. The goal is to provide a user-friendly platform for evaluating models, gathering feedback, and generating insightful reports.</p>
+<h3 is-upgraded><strong>Technologies used:</strong></h3>
+<ul>
+<li><strong>Streamlit</strong>: Frontend for user interaction and running the application.</li>
+<li><strong>OpenAI API</strong>: For generating responses based on selected GAIA test cases.</li>
+<li><strong>AWS S3</strong>: For storing and retrieving the GAIA dataset and related files.</li>
+<li><strong>Boto3</strong>: For AWS service interaction.</li>
+<li><strong>Beautifulsoup: </strong>To scrape dataset files for local download.</li>
+<li><strong>Pandas &amp; Matplotlib</strong>: For data manipulation and visualizing results</li>
+<li><strong>Moderation API</strong>: The Annotator steps are validated using the Moderation API to ensure policy compliance.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Problem Statement" duration="0">
+        <p>As AI models grow more powerful and complex, evaluating their performance on real-world scenarios is essential to ensure accuracy and reliability. The GAIA dataset offers diverse, intricate test cases that challenge models LLMs like OpenAI&#39;s GPT-3.5. </p>
+<h3 is-upgraded><strong>Objectives:</strong></h3>
+<ul>
+<li><strong>Streamlined Model Evaluation:</strong> Develop a user-friendly interface to efficiently evaluate AI models on a wide range of complex test cases, ensuring relevance to real-world scenarios.</li>
+<li><strong>Model Performance Improvement:</strong> Allow test case modifications and facilitate comparative analysis between different models and configurations to enhance model responses and decision-making.</li>
+<li><strong>Comprehensive Tracking and Visualization:</strong> Implement tools for tracking, visualizing, and reporting model performance, offering clear, actionable insights to guide model fine-tuning and future development.</li>
+<li><strong>User Feedback Integration:</strong> Create a system for capturing and storing user feedback on model performance, tracking interactions over time to drive continuous improvement based on real-world data.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Proof of Concept" duration="0">
+        <p>Our task is to develop a comprehensive validation and evaluation tool designed to streamline the assessment of AI models across multiple test cases from the GAIA dataset. This tool enables users to select, modify, and compare test cases, thereby enhancing the efficiency and accuracy of model performance evaluation.</p>
+<p>The platform will leverage Streamlit for an intuitive user interface, the OpenAI API for generating high-quality responses, and AWS S3 for scalable data storage. This combination of technologies enhances the efficiency and accuracy of model performance evaluation by allowing users to select, modify, and compare multiple test cases seamlessly. Users can provide feedback by re-evaluating responses; if the answer is correct, they can categorize the test case as &#34;Assign With Steps&#34; and submit relevant feedback to inform future improvements.</p>
+<p>For the initial setup, AWS S3 will be configured to manage the dataset and evaluation results, with basic tests ensuring proper data upload and retrieval. The OpenAI API will be integrated to validate its functionality through sample queries, while the Streamlit application will facilitate user interaction and real-time result visualization. Anticipated challenges include data handling and scalability, which will be addressed through data batching and the use of AWS Lambda for processing. </p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Overview of the GAIA Data Architecture Workflow:" duration="0">
+        <p><strong>Architectural Diagram:</strong></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\b8ae3bbd7e666e46.png"></p>
+<p>This data architectural workflow shows how to validate the GAIA dataset efficiently by using a variety of tools and technologies:</p>
+<ul>
+<li><strong>Data Management with Hugging Face Dataset &amp; Metadata file</strong>:</li>
+</ul>
+<p>           The GAIA dataset has the use cases and the metadat.jsonl file. User selects one of the</p>
+<p>           use case and for which we need to validate the answer. </p>
+<ul>
+<li><strong>AWS S3 for data storage:</strong></li>
+</ul>
+<p>        The dataset is then loaded into an AWS S3 bucket, that will be our primary storage</p>
+<p>        location. This allows us to work on seamless data functionality for processing large</p>
+<p>        datasets.</p>
+<ul>
+<li><strong>Streamlit user interface</strong>:</li>
+</ul>
+<p>        Streamlit App provides an interactive platform for all users to engage with the application.</p>
+<p>        Users can select a specific validation test case, then start the validation process, and</p>
+<p>        verify the final results.</p>
+<ul>
+<li><strong>Validation steps</strong>:</li>
+</ul>
+<p>        The validation workflow using the steps within the Streamlit application has three states as</p>
+<p>        follows: </p>
+<ul>
+<li><em>As-Is</em>: This states that the answer we got aligns with the expected final result.</li>
+<li><em>With Steps</em>: Additionally, we need to validate with steps to get the final answer.</li>
+<li><em>Inconclusive</em>: The answer that we got is ambiguous, which is prompting to further                      </li>
+</ul>
+<p>                      changes or modification.</p>
+<ul>
+<li><strong>OpenAI API</strong>:</li>
+</ul>
+<p>         Using the OpenAI API&#39;s NLP capabilities, the selection of test cases are processed in</p>
+<p>         order to provide results and check the answers for the test cases.</p>
+<ul>
+<li><strong>Streamlit report:</strong></li>
+</ul>
+<p>         The final streamlit report  allows users to verify and go through the validation results. Feedback is displayed and visualized. A final report is generated, summarizing the validation results and user feedback.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Walkthrough of the Application" duration="0">
+        <p>The following steps are taken in the application for successfully validating a test case -</p>
+<ol type="1" start="1">
+<li>Select a test case from the drop down menu- </li>
+</ol>
+<p class="image-container"><img style="width: 414.23px" src="img\\1d84ed98c3ca546d.png"></p>
+<ol type="1" start="2">
+<li>View Test case prompt and expected final result-</li>
+</ol>
+<p class="image-container"><img style="width: 366.13px" src="img\\6cb73fc2a8cad793.png"></p>
+<ol type="1" start="3">
+<li>Choose (Ask OpenAI) to query the answer from the model and display if the answer is correct.</li>
+</ol>
+<p class="image-container"><img style="width: 499.45px" src="img\\d952b7b2efe98dac.png"></p>
+<ol type="1" start="4">
+<li>If correct, assign &#34;As is&#34; and submit user feedback..</li>
+</ol>
+<p class="image-container"><img style="width: 554.95px" src="img\\8f5ae01db75b026d.png"></p>
+<ol type="1" start="5">
+<li>In case the answer is incorrect, modify the annotated steps in the provided text box. Ensure the final answer is not provided.</li>
+</ol>
+<p class="image-container"><img style="width: 565.50px" src="img\\f6d57c99f87fa5c3.png"></p>
+<ol type="1" start="6">
+<li>Upon completing the text box, select re-evaluation to query the OpenAI model again. If the answer is correct, assign the test case as &#34;Assign With Steps&#34; and submit appropriate user feedback.</li>
+</ol>
+<p class="image-container"><img style="width: 564.50px" src="img\\ad16d8136daebc7a.png"></p>
+<ol type="1" start="7">
+<li>In case the re-evaluated answer is also wrong, assign the case to &#34;Assign Inconclusive&#34; and provide appropriate user feedback.</li>
+</ol>
+<p class="image-container"><img style="width: 524.50px" src="img\\75a690cc8455c5d0.png"></p>
+<ol type="1" start="8">
+<li>View the summary table below expanding it on the top right corner. If required, download the table by selecting the download option on the top right corner.</li>
+</ol>
+<p class="image-container"><img style="width: 585.99px" src="img\\2c10366f462c4768.png"></p>
+<ol type="1" start="9">
+<li>Under Records Summary, view the Histogram to observe the frequencies of each test case statuses.</li>
+</ol>
+<p class="image-container"><img style="width: 446.90px" src="img\\478dedd0285ded9b.png"></p>
+<ol type="1" start="10">
+<li>Next, view the pie chart to observe percentage shares of each test case statuses.</li>
+</ol>
+<p class="image-container"><img style="width: 528.30px" src="img\\17fe64f485b9fc6e.png"></p>
+<ol type="1" start="11">
+<li>Lastly, view the bar chart to observe the frequencies of test case statuses based on level.</li>
+</ol>
+<p class="image-container"><img style="width: 417.92px" src="img\\8df0524ea63b62b3.png"></p>
+<p>Application Workflow</p>
+<ol type="1" start="1">
+<li><strong>Data Extraction and Loading</strong></li>
+</ol>
+<p>The process begins by scraping and uploading GAIA dataset files from HuggingFace to AWS S3. This allows dynamic fetching for the model. File Upload.py in the repository contains the script for this process.</p>
+<p>Steps: </p>
+<ol type="1" start="1">
+<li>The HuggingFace dataset is scraped using BeautifulSoup to extract links to files.</li>
+<li>Each file URL is processed and files are downloaded locally using requests.</li>
+<li>After downloading, the files are uploaded to the designated S3 bucket using the Boto3 client.</li>
+<li>Each uploaded file has a specific S3 path.</li>
+</ol>
+<p class="image-container"><img style="width: 471.65px" src="img\\e8f15b96f0c1d5d5.png"></p>
+<p class="image-container"><img style="width: 361.84px" src="img\\643a94a54e93ecd1.png"></p>
+<p>2) <strong>User Interaction/Frontend</strong></p>
+<p>        The chosen frontend framework was Streamlit for simplified and quick user interaction.</p>
+<p>Steps:</p>
+<ol type="1" start="1">
+<li>User interacts with the Streamlit UI to choose a test case from a dropdown list</li>
+<li>The selected test case includes the question, expected answer and the attached file (if present). The metadata and attachments are fetched from the AWS S3 bucket using Boto3.</li>
+</ol>
+<p class="image-container"><img style="width: 539.50px" src="img\\785050a69fe4c43.png"></p>
+<ol type="1" start="3">
+<li>Queries are made to OpenAI API and ModerationAPI is used to moderate language in the &#34;Annotated Steps&#34; textbox.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\aaa9d3de5dcb2e37.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img\\a23c717f2622bbad.png"></p>
+<ol type="1" start="4">
+<li>Comparison function allows parsing through OpenAI answers to compare with the expected result.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\7e28144de8ab8be4.png"></p>
+<ol type="1" start="5">
+<li>Test case statuses are assigned to categorize the model&#39;s effectiveness in answering questions. User feedback is recorded for any additional comments during validation.</li>
+</ol>
+<p class="image-container"><img style="width: 577.50px" src="img\\e150407dce172997.png"></p>
+<p class="image-container"><img style="width: 571.00px" src="img\\adb8a3a81a3ab670.png"></p>
+<ol type="1" start="6">
+<li>Upon assigning test case statuses, the data is recorded and managed using Pandas. The visualizations are plotted using Matplotlib.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\4a5747e80ef3a4ea.png"></p>
+<p class="image-container"><img style="width: 599.50px" src="img\\30db678fa8c7829c.png"></p>
+<p>3) <strong>Query OpenAI/Backend</strong></p>
+<p>OpenAI API was chosen as a way to communicate to an intelligent system for our validation problem statement. </p>
+<p>Steps:</p>
+<ol type="1" start="1">
+<li>Once the test case is selected and the data is fetched, the prompt (and any attached files) is sent to OpenAI&#39;s model - GPT 3.5 API for an answer.</li>
+<li>The question is passed to the model, which generates an answer that is displayed on Streamlit UI.</li>
+<li>Moderation API is used for re-evaluation textbox to prevent any violation of policies.</li>
+<li>Re-evaluation allows a moderated query to the OpenAI engine.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img\\205e14e79dc86efd.png"></p>
+<p>4) <strong>Challenges Faced</strong></p>
+<ol type="1" start="1">
+<li>Managing sensitive API keys and tokens securely was a significant challenge, especially during deployment on Streamlit Cloud. This was addressed by using environment variables and Streamlit&#39;s secrets management system.</li>
+<li>Handling large datasets from Hugging Face and efficiently uploading them to AWS S3 introduced performance bottlenecks. Optimizing the scraping and upload processes helped mitigate these issues.</li>
+<li>Integrating multiple technologies—OpenAI&#39;s GPT model, AWS S3, and Streamlit—created complexities in debugging and dependency management, particularly during deployment.</li>
+<li>Iterative testing and refinement were necessary to resolve dependency issues and ensure smooth functionality across different environments.</li>
+</ol>
+<p><strong>5) Terminal Outputs (for reference)</strong></p>
+<p>Output for Upload.py:</p>
+<p class="image-container"><img style="width: 626.17px" src="img\\72ad3ff02d3dce70.png"></p>
+<p>Output for Application.py:</p>
+<p class="image-container"><img style="width: 624.00px" src="img\\1f3fcf888ef1091b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="References" duration="0">
+        <ol type="1" start="1">
+<li><a href="https://huggingface.co/datasets/gaia-benchmark/GAIA" target="_blank">https://huggingface.co/datasets/gaia-benchmark/GAIA</a></li>
+<li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a></li>
+<li><a href="https://requests.readthedocs.io/en/latest/" target="_blank">https://requests.readthedocs.io/en/latest/</a></li>
+<li><a href="https://docs.streamlit.io/" target="_blank">https://docs.streamlit.io/</a></li>
+<li><a href="https://blog.streamlit.io/crafting-a-dashboard-app-in-python-using-streamlit/" target="_blank">https://blog.streamlit.io/crafting-a-dashboard-app-in-python-using-streamlit/</a></li>
+<li><a href="https://openai.com/chatgpt/" target="_blank">https://openai.com/chatgpt/</a></li>
+<li><a href="https://platform.openai.com/docs/quickstart" target="_blank">https://platform.openai.com/docs/quickstart</a></li>
+<li><a href="https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken" target="_blank">https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken</a></li>
+<li><a href="https://cookbook.openai.com/examples/chat_finetuning_data_prep" target="_blank">https://cookbook.openai.com/examples/chat_finetuning_data_prep</a></li>
+<li><a href="https://aws.amazon.com/console/" target="_blank">https://aws.amazon.com/console/</a></li>
+<li><a href="https://docs.aws.amazon.com/s3/" target="_blank">https://docs.aws.amazon.com/s3/</a></li>
+<li><a href="https://platform.openai.com/docs/guides/moderation" target="_blank">https://platform.openai.com/docs/guides/moderation</a></li>
+<li><a href="https://pandas.pydata.org/docs/index.html" target="_blank">https://pandas.pydata.org/docs/index.html</a></li>
+<li><a href="https://matplotlib.org/stable/index.html" target="_blank">https://matplotlib.org/stable/index.html</a></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
