@@ -30,3 +30,8 @@ Contribution overall:
 1. Sathvik Vadavatha : 33% contribution
 2. Rutuja Patil: 33% contribution
 3. Sakshi Aade: 33% contribution
+
+
+Data Architectural Diagram:
+![image](https://github.com/user-attachments/assets/070a597a-5341-45b6-8e73-58cedd125366)
+
